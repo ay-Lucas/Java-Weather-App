@@ -8,7 +8,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
+import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,7 +17,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -81,25 +80,40 @@ public class TodayController {
     }
     @FXML public void addHourlyWindGusts(ActionEvent event){
         Label windGusts = new Label("Wind Gusts");
-
         if(!hourlyWindGusts.isSelected()) {
-            gridPane.getChildren().remove(columnLogger.get(windGusts.getText()), columnLogger.get(windGusts.getText())+148);
+            removeColumn(windGusts);
             hourlyWindGusts.setSelected(false);
         }
         else{
                 setColumn(getWeather().getHourly().getWindgusts_10m(), windGusts);
             }
-
-
     }
     @FXML public void addHourlyWindSpeed(ActionEvent event){
         Label windSpeed = new Label("Wind Speed");
         if(!hourlyWindSpeed.isSelected()) {
-            gridPane.getChildren().remove(columnLogger.get(windSpeed.getText()), columnLogger.get(windSpeed.getText())+148);
+            removeColumn(windSpeed);
             hourlyWindSpeed.setSelected(false);
         }
         else{
             setColumn(getWeather().getHourly().getWindspeed_10m(), windSpeed);
+        }
+    }
+    public void removeColumn(Label label){
+        if(gridPane.getChildren().size()>916){
+//            for(String i : columnLogger.keySet()){
+//                columnLogger.put(i, columnLogger.get(i)-168-(indexCut-1) );
+//            }
+        }
+        gridPane.getChildren().remove(columnLogger.get(label.getText()), columnLogger.get(label.getText())+(168-(indexCut-1)));
+        columnLogger.remove(label.getText());
+        if(!columnLogger.isEmpty()){
+
+        }
+        centerNodes();
+    }
+    public void centerNodes(){
+        for (Node s: gridPane.getChildren()){
+            GridPane.setHalignment(s, HPos.CENTER);
         }
     }
     @FXML public void addHourlyCloudCover(){
@@ -115,19 +129,15 @@ public class TodayController {
      */
     @FXML
     public void initialize(){
-
         ColumnConstraints column1 = new ColumnConstraints();
         ColumnConstraints column2 = new ColumnConstraints();
         ColumnConstraints column3 = new ColumnConstraints();
         ColumnConstraints column4 = new ColumnConstraints();
-        column1.setFillWidth(true);
-        column2.setFillWidth(true);
-        column3.setFillWidth(true);
-        column4.setFillWidth(true);
-
-
+       column1.setFillWidth(true);
+       column2.setFillWidth(true);
+       column3.setFillWidth(true);
+       column4.setFillWidth(true);
         gridPane.getColumnConstraints().addAll(column1, column2 ,column3, column4);
-
     }
     @FXML public void setWeather(ActionEvent event){
         setHourlyTable(getWeather());
@@ -141,15 +151,19 @@ public class TodayController {
         return api.callWeatherAPI(locationApiData, units);
     }
     public void setColumn(List<Double> type, Label label){
-
+        final int startingIndex = gridPane.getChildren().size();
         ColumnConstraints column = new ColumnConstraints();
         int columnCount = gridPane.getColumnCount();
         column.setFillWidth(true);
-        columnLogger.put(label.getText(), gridPane.getChildren().size());
+
+        if(!columnLogger.isEmpty()){
+
+        }
+            columnLogger.put(label.getText(), startingIndex);
         gridPane.add(label, columnCount, 0);
 
         for(int i = 0; i<type.size()-indexCut; i++){
-           GridPane.setFillWidth(gridPane.getChildren().get(i), true);
+          // GridPane.setFillWidth(gridPane.getChildren().get(i), true);
            gridPane.add(new Label(String.valueOf(type.get(i+indexCut))), columnCount, i+1);
 
            //Column 5 Children start at Index 739
@@ -160,33 +174,34 @@ public class TodayController {
     public void setHourlyTable(WeatherApiData weather){
         trimListToCurrentTime(weather);
         gridPane.getChildren().clear();
-        gridPane.setPadding(new Insets(10, 10, 10, 10));
-        gridPane.setVgap(10);
-        gridPane.setHgap(10);
+       // gridPane.setPadding(new Insets(10, 10, 10, 10));
+        //gridPane.setVgap(10);
+       // gridPane.setHgap(10);
         Label label1 = new Label();
         label1.setText("Time"+"("+weather.getHourly_units().getTime()+")");
 
         gridPane.add(label1, 1, 0);
-        GridPane.setMargin(label1, new Insets(10, 10, 10, 10));
+      //  GridPane.setMargin(label1, new Insets(10, 10, 10, 10));
         gridPane.add(new Label("Temperature"+"("+weather.getHourly_units().getTemperature_2m()+")"), 2, 0);
         gridPane.add(new Label("Feels Like"+"("+weather.getHourly_units().getApparent_temperature()+")"), 3, 0);
         gridPane.add(new Label("Precipitation"+"("+weather.getHourly_units().getRain()+")"), 4, 0);
 
         for(int i = 0; i<weather.getHourly().getTime().size(); i++) {
-            GridPane.setFillWidth(gridPane.getChildren().get(i), true);
+           // GridPane.setFillWidth(gridPane.getChildren().get(i), true);
             gridPane.add(new Label(weekDay.get(i)), 0, i+1);
             gridPane.add(new Label(weather.getHourly().getTime().get(i)), 1, i+1);
             gridPane.add(new Label(weather.getHourly().getTemperature_2m().get(i + indexCut) +"°"), 2, i+1 );
             gridPane.add(new Label(weather.getHourly().getApparent_temperature().get(i + indexCut) + "°"), 3, i+1);
             gridPane.add(new Label(String.valueOf(weather.getHourly().getPrecipitation().get(i+indexCut))), 4, i+1);
         }
-        setGridFont();
+        //setGridFont();
+        centerNodes();
     }
     public void setGridFont(){
         ObservableList<Node>textList = gridPane.getChildren();
-        for (Node node : textList) {
-            Label.class.cast(node).setFont(Font.font("verdana", 17));
-        }
+  //      for (Node node : textList) {
+          //  Label.class.cast(node).setFont(Font.font("verdana", 17));
+     //   }
     }
 
     public static WeatherApiData trimListToCurrentTime(WeatherApiData weather){

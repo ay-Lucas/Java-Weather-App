@@ -81,7 +81,7 @@
          <content>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <GridPane fx:id="gridPane" alignment="CENTER" gridLinesVisible="true" HBox.hgrow="ALWAYS">
+                  <GridPane fx:id="gridPane" alignment="CENTER" HBox.hgrow="ALWAYS">
                      <rowConstraints>
                         <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
                      </rowConstraints>
