@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.weatherapp.controllers.HourlyController">
+   <children>
+      <Rectangle height="720.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" focusAngle="-91.39" focusDistance="0.7011494252873565" radius="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.14740000665187836" green="0.17159999907016754" blue="0.2199999988079071" opacity="0.45839694142341614" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.006711409395973154">
+                     <color>
+                        <Color red="0.14740000665187836" green="0.17159999907016754" blue="0.2199999988079071" opacity="0.45839694142341614" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.15740740299224854" green="0.5787037014961243" blue="1.0" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Rectangle>
+      <Rectangle fill="#00000094" height="120.0" stroke="BLACK" strokeLineCap="ROUND" strokeMiterLimit="0.0" strokeType="OUTSIDE" strokeWidth="0.0" width="1280.0" />
+      <ToolBar fx:id="toolBar" layoutX="180.0" layoutY="80.0" prefHeight="40.0" prefWidth="880.0">
+         <effect>
+            <ColorAdjust />
+         </effect>
+         <items>
+            <Button fx:id="homeButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Today" />
+            <Button fx:id="hourlyButton" mnemonicParsing="false" onAction="#SwitchToHourly" prefHeight="25.0" prefWidth="170.0" text="Hourly" />
+            <Button fx:id="fourteenDayButton" mnemonicParsing="false" onAction="#SwitchToFourteenDay" prefHeight="25.0" prefWidth="170.0" text="Daily" />
+            <Button fx:id="radarButton" mnemonicParsing="false" onAction="#SwitchToRadar" prefHeight="25.0" prefWidth="170.0" text="Radar" />
+            <MenuButton fx:id="unitMenu" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Units">
+               <items>
+                  <MenuItem fx:id="imperial" mnemonicParsing="false" text="Imperial" />
+                  <MenuItem fx:id="metric" mnemonicParsing="false" text="Metric" />
+               </items>
+            </MenuButton>
+         </items>
+      </ToolBar>
+      <TextField fx:id="searchField" layoutX="633.0" layoutY="33.0" onAction="#validateInput" prefHeight="25.0" prefWidth="226.0" promptText="Enter City and State or Zipcode" />
+      <Label fx:id="logoLabel" layoutX="454.0" layoutY="28.0" text="MyWeather" textFill="WHITE">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="errorSearchLabel1" layoutX="1071.0" layoutY="31.0" prefHeight="26.0" prefWidth="180.0" textFill="WHITE" wrapText="true">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
