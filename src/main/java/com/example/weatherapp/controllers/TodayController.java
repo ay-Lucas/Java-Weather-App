@@ -53,7 +53,7 @@ public class TodayController {
     private Scene scene;
     private Parent root;
     private static int indexCut;
-    private static LinkedHashMap<String, Integer> columnLogger = new LinkedHashMap<>();
+    private static Map<String, Integer> columnLogger = new HashMap<>();
     @FXML public void SwitchToToday(ActionEvent event) throws IOException {
        todayPane.setVisible(true);
        hourlyPane.setVisible(false);
@@ -99,16 +99,12 @@ public class TodayController {
         }
     }
     public void removeColumn(Label label){
-        if(gridPane.getChildren().size()>916){
-//            for(String i : columnLogger.keySet()){
-//                columnLogger.put(i, columnLogger.get(i)-168-(indexCut-1) );
-//            }
+        int gridIndex = 169-indexCut;
+        if (gridPane.getChildren().size() == columnLogger.get(label.getText())){
+            columnLogger.put(label.getText(), columnLogger.get(label.getText())-gridIndex);
         }
-        gridPane.getChildren().remove(columnLogger.get(label.getText()), columnLogger.get(label.getText())+(168-(indexCut-1)));
+        gridPane.getChildren().remove(columnLogger.get(label.getText()), columnLogger.get(label.getText())+gridIndex);
         columnLogger.remove(label.getText());
-        if(!columnLogger.isEmpty()){
-
-        }
         centerNodes();
     }
     public void centerNodes(){
@@ -159,7 +155,7 @@ public class TodayController {
         if(!columnLogger.isEmpty()){
 
         }
-            columnLogger.put(label.getText(), startingIndex);
+        columnLogger.put(label.getText(), startingIndex);
         gridPane.add(label, columnCount, 0);
 
         for(int i = 0; i<type.size()-indexCut; i++){
