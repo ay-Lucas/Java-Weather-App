@@ -10,10 +10,10 @@ public class HourlyModel {
     private List<Double> precipitation_probability;
     private List<Double> precipitation;
     private List<Double> snowfall;
-    private List<Integer> weathercode;
+    private List<Integer>weathercode;
     private List<Double> uv_index;
     private List<Double> uv_index_clear_sky;
-    private List<Double> geopotential_height_1000hpa;
+    private List<Double> geopotential_height_1000hPa;
     private List<Double> rain;
     private List<Double> showers;
     private List<Double> cloudcover;
@@ -105,12 +105,12 @@ public class HourlyModel {
         this.uv_index_clear_sky = uv_index_clear_sky;
     }
 
-    public List<Double> getGeopotential_height_1000hpa() {
-        return geopotential_height_1000hpa;
+    public List<Double> getGeopotential_height_1000hPa() {
+        return geopotential_height_1000hPa;
     }
 
-    public void setGeopotential_height_1000hpa(List<Double> geopotential_height_1000hpa) {
-        this.geopotential_height_1000hpa = geopotential_height_1000hpa;
+    public void setGeopotential_height_1000hPa(List<Double> geopotential_height_1000hPa) {
+        this.geopotential_height_1000hPa = geopotential_height_1000hPa;
     }
 
     public List<Double> getRain() {

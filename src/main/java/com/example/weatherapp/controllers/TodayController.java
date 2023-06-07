@@ -1,11 +1,9 @@
 package com.example.weatherapp.controllers;
-
 import com.example.weatherapp.LocationAndWeatherApi;
 import com.example.weatherapp.LocationApiData;
 import com.example.weatherapp.Units;
 import com.example.weatherapp.WeatherApiData;
 import javafx.beans.property.StringProperty;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -23,10 +21,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 public class TodayController {
     @FXML private GridPane gridPane;
+    //@FXML private ListView<Object> listView;
     @FXML private MenuItem metric;
     @FXML private MenuItem imperial;
     @FXML private MenuButton unitMenu;
@@ -38,9 +38,23 @@ public class TodayController {
     @FXML private Button dailyButton;
     @FXML private Button radarButton;
     @FXML private TextField searchField;
+    @FXML private RadioMenuItem hourlyTemperature;
+    @FXML private RadioMenuItem hourlyApparentTemperature;
+    @FXML private RadioMenuItem hourlyPrecipitation;
+    @FXML private RadioMenuItem hourlyPrecipitationProbability;
+    @FXML private RadioMenuItem hourlyShowers;
+    @FXML private RadioMenuItem hourlyRain;
+    @FXML private RadioMenuItem hourlySnowfall;
+    @FXML private RadioMenuItem hourlyDewpoint;
     @FXML private RadioMenuItem hourlyWindGusts;
     @FXML private RadioMenuItem hourlyWindSpeed;
-
+    @FXML private RadioMenuItem hourlyCloudCover;
+    @FXML private RadioMenuItem hourlyVisibility;
+    @FXML private RadioMenuItem hourlyUVIndexClearSky;
+    @FXML private RadioMenuItem hourlyUVIndex;
+    @FXML private RadioMenuItem hourlyPressure;
+    @FXML private RadioMenuItem hourlyWindDirection;
+    @FXML private RadioMenuItem hourlyWeatherCode;
     @FXML private AnchorPane todayPane;
     @FXML private Text errorText;
     @FXML private TableView<StringProperty> hourlyTable;
@@ -53,7 +67,6 @@ public class TodayController {
     private Scene scene;
     private Parent root;
     private static int indexCut;
-    private static Map<String, Integer> columnLogger = new HashMap<>();
     @FXML public void SwitchToToday(ActionEvent event) throws IOException {
        todayPane.setVisible(true);
        hourlyPane.setVisible(false);
@@ -98,13 +111,170 @@ public class TodayController {
             setColumn(getWeather().getHourly().getWindspeed_10m(), windSpeed);
         }
     }
-    public void removeColumn(Label label){
-        int gridIndex = 169-indexCut;
-        if (gridPane.getChildren().size() == columnLogger.get(label.getText())){
-            columnLogger.put(label.getText(), columnLogger.get(label.getText())-gridIndex);
+    @FXML public void addHourlyCloudCover(ActionEvent event){
+        Label cloudCover = new Label("Cloud Cover");
+        if(!hourlyCloudCover.isSelected()) {
+            removeColumn(cloudCover);
+            hourlyCloudCover.setSelected(false);
         }
-        gridPane.getChildren().remove(columnLogger.get(label.getText()), columnLogger.get(label.getText())+gridIndex);
-        columnLogger.remove(label.getText());
+        else{
+            setColumn(getWeather().getHourly().getCloudcover(), cloudCover);
+        }
+    }
+    @FXML public void addHourlyVisibility(ActionEvent event){
+        Label visibility = new Label("Visibility");
+        if(!hourlyVisibility.isSelected()) {
+            removeColumn(visibility);
+            hourlyVisibility.setSelected(false);
+        }
+        else{
+            setColumn(getWeather().getHourly().getVisibility(), visibility);
+        }
+    }
+    @FXML public void addHourlyPressure(ActionEvent event){
+        Label pressure = new Label("Pressure");
+        if(!hourlyPressure.isSelected()) {
+            removeColumn(pressure);
+            hourlyPressure.setSelected(false);
+        }
+        else{
+            setColumn(getWeather().getHourly().getGeopotential_height_1000hPa(), pressure);
+        }
+    }
+    @FXML public void addHourlyUVIndex(ActionEvent event){
+        Label uvIndex = new Label("UV Index");
+        if(!hourlyUVIndex.isSelected()) {
+            removeColumn(uvIndex);
+            hourlyUVIndex.setSelected(false);
+        }
+        else{
+            setColumn(getWeather().getHourly().getUv_index(), uvIndex);
+        }
+    }
+    @FXML public void addHourlyUVIndexClearSky(ActionEvent event){
+        Label uvIndexClearSky = new Label("UV Index (Clear Sky)");
+        if(!hourlyUVIndexClearSky.isSelected()) {
+            removeColumn(uvIndexClearSky);
+            hourlyUVIndexClearSky.setSelected(false);
+        }
+        else{
+            setColumn(getWeather().getHourly().getUv_index_clear_sky(), uvIndexClearSky);
+        }
+    }
+    @FXML public void addHourlyPrecipitation(ActionEvent event) {
+        Label precipitation = new Label("Precipitation");
+        if (!hourlyPrecipitation.isSelected()) {
+            removeColumn(precipitation);
+            hourlyPrecipitation.setSelected(false);
+        } else {
+            setColumn(getWeather().getHourly().getPrecipitation(), precipitation);
+        }
+    }
+    @FXML public void addHourlyApparentTemperature(ActionEvent event){
+        Label apparentTemperature = new Label("Feels Like");
+        if (!hourlyApparentTemperature.isSelected()) {
+            removeColumn(apparentTemperature);
+            hourlyApparentTemperature.setSelected(false);
+        } else {
+            setColumn(getWeather().getHourly().getApparent_temperature(), apparentTemperature);
+        }
+    }
+    @FXML public void addHourlyWindDirection(ActionEvent event){
+        Label windDirection = new Label("Wind Direction");
+        if (!hourlyWindDirection.isSelected()) {
+            removeColumn(windDirection);
+            hourlyWindDirection.setSelected(false);
+        } else {
+            setColumn(getWeather().getHourly().getWinddirection_10m(), windDirection);
+        }
+    }
+    @FXML public void addHourlyDewpoint(ActionEvent event){
+        Label dewpoint = new Label("Dewpoint");
+        if (!hourlyDewpoint.isSelected()) {
+            removeColumn(dewpoint);
+            hourlyDewpoint.setSelected(false);
+        } else {
+            setColumn(getWeather().getHourly().getDewpoint_2m(), dewpoint);
+        }
+    }
+    @FXML public void addHourlySnowfall(ActionEvent event){
+        Label snowfall = new Label("Snowfall");
+        if (!hourlySnowfall.isSelected()) {
+            removeColumn(snowfall);
+            hourlySnowfall.setSelected(false);
+        } else {
+            setColumn(getWeather().getHourly().getSnowfall(), snowfall);
+        }
+    }
+    @FXML public void addHourlyRain(ActionEvent event){
+        Label rain = new Label("Rain");
+        if (!hourlyRain.isSelected()) {
+            removeColumn(rain);
+            hourlyRain.setSelected(false);
+        } else {
+            setColumn(getWeather().getHourly().getRain(), rain);
+        }
+    }
+    @FXML public void addHourlyShowers(ActionEvent event){
+        Label showers = new Label("Showers");
+        if (!hourlyShowers.isSelected()) {
+            removeColumn(showers);
+            hourlyShowers.setSelected(false);
+        } else {
+            setColumn(getWeather().getHourly().getShowers(), showers);
+        }
+    }
+    @FXML public void addHourlyPrecipitationProbability(ActionEvent event){
+        Label precipitationProbability = new Label("Precipitation Probability");
+        if (!hourlyPrecipitationProbability.isSelected()) {
+            removeColumn(precipitationProbability);
+            hourlyPrecipitationProbability.setSelected(false);
+        } else {
+            setColumn(getWeather().getHourly().getPrecipitation_probability(), precipitationProbability);
+        }
+    }
+    @FXML public void addHourlyWeatherCode(ActionEvent event){
+        Label weatherCode = new Label("Weather Code");
+        if (!hourlyWeatherCode.isSelected()) {
+            removeColumn(weatherCode);
+            hourlyWeatherCode.setSelected(false);
+        } else {
+            setColumn(getWeather().getHourly().getWeathercode(), weatherCode);
+        }
+    }
+    @FXML public void addHourlyTemperature(ActionEvent event){
+
+        Label temperature = new Label("Temperature");
+        if (!hourlyTemperature.isSelected()) {
+            removeColumn(temperature);
+            hourlyTemperature.setSelected(false);
+        } else {
+            setColumn(getWeather().getHourly().getTemperature_2m(), temperature);
+        }
+    }
+    public void addHourlyTime(List<String> formattedTime){
+        Label time = new Label("Time");
+        gridPane.add(time, 1, 0);
+        for(int i = 0; i<formattedTime.size(); i++){
+            gridPane.add(new Label(formattedTime.get(i)), 1, i+1);
+        }
+    }
+    public void addDays(List<String> weekDays){
+        for(int i = 0; i<weekDays.size(); i++){
+            gridPane.add(new Label(weekDays.get(i)), 0, i);
+        }
+    }
+    public void removeColumn(Label label){
+        String columnName = label.getText();
+        int gridSize = gridPane.getChildren().size();
+            for(int i = 0; i<gridSize; i++){
+                String node = gridPane.getChildren().get(i).toString();
+
+                if(node.contains(columnName)){
+                    gridPane.getChildren().remove(i, i+(169-indexCut));
+                    break;
+                }
+            }
         centerNodes();
     }
     public void centerNodes(){
@@ -125,48 +295,95 @@ public class TodayController {
      */
     @FXML
     public void initialize(){
-        ColumnConstraints column1 = new ColumnConstraints();
-        ColumnConstraints column2 = new ColumnConstraints();
-        ColumnConstraints column3 = new ColumnConstraints();
-        ColumnConstraints column4 = new ColumnConstraints();
-       column1.setFillWidth(true);
-       column2.setFillWidth(true);
-       column3.setFillWidth(true);
-       column4.setFillWidth(true);
-        gridPane.getColumnConstraints().addAll(column1, column2 ,column3, column4);
+
     }
     @FXML public void setWeather(ActionEvent event){
-        setHourlyTable(getWeather());
+        setHourlyTable(event, getWeather());
     }
     @FXML public WeatherApiData getWeather(){
-        //need to validate more
         if (searchField.getText() == null)
             return null;
+        System.out.println("called getWeather");
         LocationAndWeatherApi api = new LocationAndWeatherApi();
         LocationApiData locationApiData = api.setUserLocation(searchField.getText());
         return api.callWeatherAPI(locationApiData, units);
     }
-    public void setColumn(List<Double> type, Label label){
-        final int startingIndex = gridPane.getChildren().size();
+    public void setColumn(List type, Label label){
         ColumnConstraints column = new ColumnConstraints();
         int columnCount = gridPane.getColumnCount();
         column.setFillWidth(true);
 
-        if(!columnLogger.isEmpty()){
-
-        }
-        columnLogger.put(label.getText(), startingIndex);
         gridPane.add(label, columnCount, 0);
-
         for(int i = 0; i<type.size()-indexCut; i++){
-          // GridPane.setFillWidth(gridPane.getChildren().get(i), true);
-           gridPane.add(new Label(String.valueOf(type.get(i+indexCut))), columnCount, i+1);
-
-           //Column 5 Children start at Index 739
-           // GridPane.setFillWidth(gridPane.getChildren().get(i), true);
+            gridPane.add(new Label(String.valueOf(type.get(i+indexCut-1))), columnCount, i+1);
         }
-       setGridFont();
+        centerNodes();
     }
+    public void setHourlyTable(ActionEvent event, WeatherApiData weather){
+        hourlyTemperature.setSelected(true);
+        hourlyApparentTemperature.setSelected(true);
+        hourlyPrecipitation.setSelected(true);
+        gridPane.getChildren().clear();
+        List<String> formattedTime = trimListToCurrentTime(weather);
+        addDays(weekDay);
+        addHourlyTime(formattedTime);
+        addHourlyTemperature(event);
+        addHourlyPrecipitation(event);
+        addHourlyApparentTemperature(event);
+        centerNodes();
+        //gridPane.setPadding(new Insets(10, 10, 10, 10));
+        //gridPane.setVgap(10);
+        //gridPane.setHgap(10);
+    }
+
+    public static List<String> trimListToCurrentTime(WeatherApiData weather){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        DateTimeFormatter dateTimeMonth = DateTimeFormatter.ofPattern("E, M/d, hh:mm a");
+        for(int i = 0; i<weather.getHourly().getTime().size();i++){
+            if(weather.getCurrent_weather().getTime().equals(weather.getHourly().getTime().get(i))){
+                indexCut = i;
+                break;
+            }
+        }
+        //Sets time to "hh:mm a"
+        for(ListIterator<String> e = weather.getHourly().getTime().listIterator(); e.hasNext();){
+            LocalDateTime localDateTime = LocalDateTime.parse(e.next(), formatter);
+            String date = localDateTime.format(dateTimeMonth);
+            e.set(date);
+        }
+
+        weekDay = new ArrayList<>(weather.getHourly().getTime().size()-indexCut);
+        String[] temp = weather.getHourly().getTime().get(indexCut).split(", ", 3);
+        weekDay.add(0, "");
+        weekDay.add(1, temp[0] + " " + temp[1]);
+
+        weather.getHourly().getTime().subList(0, indexCut).clear();
+        for(int i = 0; i<weather.getHourly().getTime().size();i++) {
+            temp = weather.getHourly().getTime().get(i).split(", ", 3);
+            if (temp[2].equals("12:00 AM")) {
+                weekDay.add(i+1, temp[0] + " " + temp[1]);
+            }
+            else
+                weekDay.add(i+1, "");
+            weather.getHourly().getTime().set(i, temp[2]);
+        }
+        if(weekDay.get(weekDay.size()-1)!=""){
+            weekDay.set(weekDay.size()-1,"");
+        }
+        for(ListIterator<String> i = weather.getHourly().getTime().listIterator();i.hasNext();){
+            System.out.println(i.next());
+        }
+        return weather.getHourly().getTime();
+    }
+    /*
+    public void setGridFont(){
+        ObservableList<Node>textList = gridPane.getChildren();
+         for (Node node : textList) {
+          Label.class.cast(node).setFont(Font.font("verdana", 17));
+        }
+    }
+     */
+    /*
     public void setHourlyTable(WeatherApiData weather){
         trimListToCurrentTime(weather);
         gridPane.getChildren().clear();
@@ -178,13 +395,13 @@ public class TodayController {
 
         gridPane.add(label1, 1, 0);
       //  GridPane.setMargin(label1, new Insets(10, 10, 10, 10));
-        gridPane.add(new Label("Temperature"+"("+weather.getHourly_units().getTemperature_2m()+")"), 2, 0);
-        gridPane.add(new Label("Feels Like"+"("+weather.getHourly_units().getApparent_temperature()+")"), 3, 0);
-        gridPane.add(new Label("Precipitation"+"("+weather.getHourly_units().getRain()+")"), 4, 0);
+        gridPane.add(new Label("Temperature"+" ("+weather.getHourly_units().getTemperature_2m()+")"), 2, 0);
+        gridPane.add(new Label("Feels Like"+" ("+weather.getHourly_units().getApparent_temperature()+")"), 3, 0);
+        gridPane.add(new Label("Precipitation"+" ("+weather.getHourly_units().getRain()+")"), 4, 0);
 
         for(int i = 0; i<weather.getHourly().getTime().size(); i++) {
            // GridPane.setFillWidth(gridPane.getChildren().get(i), true);
-            gridPane.add(new Label(weekDay.get(i)), 0, i+1);
+            //gridPane.add(new Label(weekDay.get(i)), 0, i+1);
             gridPane.add(new Label(weather.getHourly().getTime().get(i)), 1, i+1);
             gridPane.add(new Label(weather.getHourly().getTemperature_2m().get(i + indexCut) +"°"), 2, i+1 );
             gridPane.add(new Label(weather.getHourly().getApparent_temperature().get(i + indexCut) + "°"), 3, i+1);
@@ -192,167 +409,10 @@ public class TodayController {
         }
         //setGridFont();
         centerNodes();
-    }
-    public void setGridFont(){
-        ObservableList<Node>textList = gridPane.getChildren();
-  //      for (Node node : textList) {
-          //  Label.class.cast(node).setFont(Font.font("verdana", 17));
-     //   }
+        hourlyTemperature.setSelected(true);
+        hourlyApparentTemperature.setSelected(true);
+        hourlyPrecipitation.setSelected(true);
     }
 
-    public static WeatherApiData trimListToCurrentTime(WeatherApiData weather){
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm a");
-        DateTimeFormatter weekDayAndMonth = DateTimeFormatter.ofPattern("E, M/d");
-        DateTimeFormatter dateTimeMonth = DateTimeFormatter.ofPattern("E, M/d, hh:mm a");
-        //Cuts out hours that have passed by to the present
-        for(int i = 0; i<weather.getHourly().getTime().size();i++){
-            if(weather.getCurrent_weather().getTime().equals(weather.getHourly().getTime().get(i))){
-                weather.getHourly().getTime().subList(0, i-1).clear();
-                indexCut = i-1;
-                i=weather.getHourly().getTime().size();
-            }
-        }
-
-        //Sets time to "hh:mm a"
-        for(ListIterator<String> e = weather.getHourly().getTime().listIterator(); e.hasNext();){
-            LocalDateTime localDateTime = LocalDateTime.parse(e.next(), formatter);
-            String date = localDateTime.format(dateTimeMonth);
-            e.set(date);
-        }
-
-        weekDay = new ArrayList<>(weather.getHourly().getTime().size());
-        for(int i = 0; i<weather.getHourly().getTime().size();i++) {
-            String[] temp = weather.getHourly().getTime().get(i).split(", ", 3);
-            if (temp[2].equals("12:00 AM")) {
-                //String date = weather.getHourly().getTime().get(i+)
-                weekDay.add(i, temp[0] + " " + temp[1]);
-            }
-            else if(i==0){
-                weekDay.add(i, temp[0] + " " + temp[1]);
-            }
-            else
-                weekDay.add(i, "");
-            weather.getHourly().getTime().set(i, temp[2]);
-        }
-
-        for(ListIterator<String> i = weather.getHourly().getTime().listIterator();i.hasNext();){
-            System.out.println(i.next());
-        }
-        return weather;
-    }
-        /*
-        for(int i = 0; i<weather.getHourly().getTime().size();i++) {
-            String[] temp = weather.getHourly().getTime().get(i).split(", ", 3);
-            if (temp[2].equals("12:00 AM")) {
-                //String date = weather.getHourly().getTime().get(i+)
-                weather.getHourly().getTime().add(i, temp[0] + " " + temp[1]);
-                weather.getHourly().getTime().set(i+1, temp[2]);
-                i++;
-            }
-            else if(i==0){
-                weather.getHourly().getTime().add(i,temp[0] + " " + temp[1]);
-            }
-            else{
-                weather.getHourly().getTime().set(i, temp[2]);
-            }
-        }
-
-         */
-        /*
-            //needs to be array list!!
-        for(ListIterator<String> e = weather.getHourly().getTime().listIterator(); e.hasNext();){
-            String[] temp = e.next().split(", ");
-            if(temp[2].equals("11:00 PM")) {
-                e.add(temp[0]+temp[1]);
-
-
-            }
-            else{
-                e.set(temp[2]);
-            }
-        }
-
-         */
-
-        /*
-        for (ListIterator<String> i = weather.getHourly().getTime().listIterator(); i.hasNext();){
-            if (i.nextIndex() % 24 == 0) {
-                //LocalDateTime localDateTime = LocalDateTime.parse(i.next(), time);
-                LocalDateTime.parse(i.next(), )
-                String element =
-                i.set(element);
-            }
-            System.out.println(i.next());
-        }
-
-         */
-
-
- /*
-        for(int i = 0; i<weather.getHourly().getTime().size(); i++){
-            LocalDateTime newLocalDateTime = LocalDateTime.parse(i.next(), formatter);
-            if (weather.getHourly().getTime().indexOf()% 24 == 0) {
-                String twentyFourth = newLocalDateTime.format(dateWithTIme);
-                i.set(twentyFourth);
-            }
-            else{
-                String element = newLocalDateTime.format(time);
-                i.set(element);
-            }
-            System.out.println(i.next());
-        }
-        */
-
-
-/*
-    @FXML public void setHourlyTable(WeatherApiData weather) {
-
-        int listSize = weather.getHourly().getTime().size();
-
-        //List<List<String>>values = new ArrayList<List<String>>();
-
-        ObservableList<StringProperty> data = FXCollections.observableArrayList(
-                weather.
-        //timeCol.setCellValueFactory(data -> data.getValue().getDaily().getTime());
-
-        int count = 0;
-        StringProperty row;
-        //for(int i = 0; i <listSize; i++){
-          //  int finalI = i;
-            timeCol.setCellValueFactory(value -> new SimpleStringProperty());
-        //}
-        for(int r = 0; r <listSize; r++){
-            //timeCol.setCellValueFactory(date -> new SimpleStringProperty(weather.getHourly().getTime().get(finalR)));
-            //row.add(new SimpleStringProperty(weather.getHourly().getTime().get(r)));
-            row= (new SimpleStringProperty(weather.getHourly().getTime().get(r)));
-            data.add(row);
-            //data.addStringProperty
-        }
-        //hourlyTable.setItems(getWeatherData(weather));
-        hourlyTable.setItems(data);
-        hourlyTable.isVisible();
-    }
-
-//Create a class with matching constructors that match the columns
-    public ObservableList<String> getWeatherData(WeatherApiData weather){
-       ObservableList<String> data = FXCollections.observableArrayList();
-       return data;
      */
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
+}

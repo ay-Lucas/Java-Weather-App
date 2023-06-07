@@ -9,10 +9,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application {
-    Scene HomeScene, HourlyScene, FourteenDayScene, RadarScene;
-
-
-
 
     @Override
     public void start(Stage primaryStage) throws IOException {

@@ -12,6 +12,7 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -54,13 +55,20 @@
                               <RadioMenuItem fx:id="hourlyWindGusts" mnemonicParsing="false" onAction="#addHourlyWindGusts" text="Wind Gusts" />
                               <RadioMenuItem fx:id="hourlyWindSpeed" mnemonicParsing="false" onAction="#addHourlyWindSpeed" text="Wind Speed" />
                               <RadioMenuItem fx:id="hourlyCloudCover" mnemonicParsing="false" onAction="#addHourlyCloudCover" text="Cloud Cover" />
-                              <RadioMenuItem mnemonicParsing="false" text="Visibility" />
-                              <RadioMenuItem mnemonicParsing="false" text="UV Index" />
-                              <RadioMenuItem mnemonicParsing="false" text="Precipitation Probability" />
-                              <RadioMenuItem mnemonicParsing="false" text="Pressure" />
-                              <RadioMenuItem mnemonicParsing="false" text="Wind Direction" />
-                              <RadioMenuItem mnemonicParsing="false" text="Weathercode" />
-                              <RadioMenuItem mnemonicParsing="false" text="Snowfall" />
+                              <RadioMenuItem fx:id="hourlyApparentTemperature" mnemonicParsing="false" onAction="#addHourlyApparentTemperature" text="Feels Like" />
+                              <RadioMenuItem fx:id="hourlyTemperature" mnemonicParsing="false" onAction="#addHourlyTemperature" text="Temperature" />
+                              <RadioMenuItem fx:id="hourlyVisibility" mnemonicParsing="false" onAction="#addHourlyVisibility" text="Visibility" />
+                              <RadioMenuItem fx:id="hourlyUVIndex" mnemonicParsing="false" onAction="#addHourlyUVIndex" text="UV Index" />
+                              <RadioMenuItem fx:id="hourlyUVIndexClearSky" mnemonicParsing="false" onAction="#addHourlyUVIndexClearSky" text="UV Index Clear Sky" />
+                              <RadioMenuItem fx:id="hourlyPrecipitation" mnemonicParsing="false" onAction="#addHourlyPrecipitation" text="Precipitation" />
+                              <RadioMenuItem fx:id="hourlyPressure" mnemonicParsing="false" onAction="#addHourlyPressure" text="Pressure" />
+                              <RadioMenuItem fx:id="hourlyWindDirection" mnemonicParsing="false" onAction="#addHourlyWindDirection" text="Wind Direction" />
+                              <RadioMenuItem fx:id="hourlyWeatherCode" mnemonicParsing="false" onAction="#addHourlyWeatherCode" text="Weathercode" />
+                              <RadioMenuItem fx:id="hourlyShowers" mnemonicParsing="false" onAction="#addHourlyShowers" text="Showers" />
+                              <RadioMenuItem fx:id="hourlyRain" mnemonicParsing="false" onAction="#addHourlyRain" text="Rain" />
+                              <RadioMenuItem fx:id="hourlyPrecipitationProbability" mnemonicParsing="false" onAction="#addHourlyPrecipitationProbability" text="Precipitation Probability" />
+                              <RadioMenuItem fx:id="hourlyDewpoint" mnemonicParsing="false" onAction="#addHourlyDewpoint" text="Dewpoint" />
+                              <RadioMenuItem fx:id="hourlySnowfall" mnemonicParsing="false" onAction="#addHourlySnowfall" text="Snowfall" />
                            </items>
                         </MenuButton>
                         <Label fx:id="logoLabel" prefHeight="0.0" prefWidth="133.0" text="MyWeather" textFill="WHITE">
@@ -85,6 +93,9 @@
                      <rowConstraints>
                         <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
                      </rowConstraints>
+                     <columnConstraints>
+                        <ColumnConstraints />
+                     </columnConstraints>
                   </GridPane>
                </children>
             </HBox>
