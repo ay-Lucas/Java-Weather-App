@@ -87,9 +87,12 @@ public class TodayController {
     }
     @FXML public void changeUnitsToImperial(ActionEvent event){
         units.setImperial();
+        setWeather(event);
     }
     @FXML public void changeUnitsToMetric(ActionEvent event){
        units.setMetric();
+       setWeather(event);
+       //TODO: change units of all columns currently displayed
     }
     @FXML public void addHourlyWindGusts(ActionEvent event){
         Label windGusts = new Label("Wind Gusts");
@@ -112,7 +115,7 @@ public class TodayController {
         }
     }
     @FXML public void addHourlyCloudCover(ActionEvent event){
-        Label cloudCover = new Label("Cloud Cover");
+        Label cloudCover = new Label("Cloud  Cover");
         if(!hourlyCloudCover.isSelected()) {
             removeColumn(cloudCover);
             hourlyCloudCover.setSelected(false);
